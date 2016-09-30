@@ -27,11 +27,12 @@
 	<h1>Code Scroll</h1>
 	<h2>Click the button to start</h2>
 	<button id="start">Click me!</button>
-	<input id="speed" type="range"/>
+	<input id="speed" type="number" value=0.5 min=0/>
 	<div id="output">
 	</div>
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/screenfull.js/3.0.2/screenfull.js"</script>
 <script type="text/javascript">
 	String.prototype.insert = function (index, string) {
 	  if (index > 0)
@@ -40,7 +41,6 @@
 	    return string + this;
 	};
 	var printable="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzœ∑´®†¥¨ˆøπåß∂ƒ©˙∆˚¬Ω≈ç√∫˜µ≤≥÷÷ææ“‘«≠–ºª•¶§∞¢£™¡()}*&^%$#@!~_+=-[];',./<>?:|}{"
-
 	function genRandom(length){
 		var result=[];
 		var i=0;
@@ -73,7 +73,7 @@
 	}
 	function scroll(){
 		$("#output").append(genBlock(100, 5));
-			$('html, body').animate({ scrollTop: $(document).height()}, 750, 'linear', function(){
+			$('html, body').animate({ scrollTop: $(document).height()}, Number($("#speed").val())*1000, 'linear', function(){
 				scroll();
 			})
 	}
@@ -81,8 +81,9 @@
 	$(document).ready(function(){
 		$('#start').click(function(){
 			scroll();
+			if(screenfull.enabled()){
+				screenfull.request();
+			}
 		})
-
-
 	})
 </script>
