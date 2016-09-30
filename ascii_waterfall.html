@@ -1,0 +1,93 @@
+<link href="https://fonts.googleapis.com/css?family=Droid+Sans+Mono|VT323" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Press+Start+2P|Revalia|Stalinist+One" rel="stylesheet">
+<style>
+	#output{
+		font-family:Courier,monospace;
+/*	    -webkit-text-fill-color:#40ff00;  Will override color (regardless of order) 
+	    -webkit-text-stroke-width: 0.25px;
+	    -webkit-text-stroke-color: white;*/
+		font-size: 12px;
+		color:#40ff00;
+		text-decoration: none;
+		text-shadow:3px 3px 3px white;
+	}
+	body{
+		background-color:black;
+	}
+	h1{
+		color:#88ff4d;
+		font-family:'VT323', Courier,monospace;
+	}
+	h2{
+		color:#40ff00;
+		font-family:'VT323', Courier,monospace;
+	}
+</style>
+<body>
+	<h1>Code Scroll</h1>
+	<h2>Click the button to start</h2>
+	<button id="start">Click me!</button>
+	<input id="speed" type="number" value=0.5 min=0/>
+	<div id="output">
+	</div>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/screenfull.js/3.0.2/screenfull.js"</script>
+<script type="text/javascript">
+	String.prototype.insert = function (index, string) {
+	  if (index > 0)
+	    return this.substring(0, index) + string + this.substring(index, this.length);
+	  else
+	    return string + this;
+	};
+	var printable="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzœ∑´®†¥¨ˆøπåß∂ƒ©˙∆˚¬Ω≈ç√∫˜µ≤≥÷÷ææ“‘«≠–ºª•¶§∞¢£™¡()}*&^%$#@!~_+=-[];',./<>?:|}{"
+
+	function genRandom(length){
+		var result=[];
+		var i=0;
+		while(i < length){
+			i++;
+			result.push(printable.charAt(Math.random()*printable.length));
+			result.push("\t")
+		}
+		return result.join('');
+	};
+	function injectSpaces(string){
+		for(var i=0;i<Math.round(Math.random()*string.length);i++){
+			if(Math.random() > 0.75){
+				for(var i=0;i<Math.round(Math.random()*string.length);i++){
+					string.insert(Math.round(Math.random()*string.length), " ")
+				}
+			}
+			string.insert(Math.round(Math.random()*string.length), " ")
+		}
+		return string
+	}
+	function genBlock(x, y){
+		var result="";
+		var i=0;
+		while(i < y){
+			i++;
+			result+=injectSpaces(genRandom(x));
+		}
+		return result;
+	}
+	function scroll(){
+		$("#output").append(genBlock(100, 5));
+			$('html, body').animate({ scrollTop: $(document).height()}, Number($("#speed").val())*1000, 'linear', function(){
+				scroll();
+			})
+	}
+	//TODO: Make it generate as the program scrolls down. Make it happen!
+	$(document).ready(function(){
+
+		$('#start').click(function(){
+			scroll();
+			if(screenfull.enabled()){
+				screenfull.request();
+			}
+		})
+
+
+	})
+</script>

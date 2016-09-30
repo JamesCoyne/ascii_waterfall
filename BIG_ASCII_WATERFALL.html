@@ -1,0 +1,65 @@
+<!-- THIS INCLUDES A REALLY COOL EFFECT BUT IN THE END SOMETHING I DIDN'T WANT. -PAST JACKSON -->
+<link href="https://fonts.googleapis.com/css?family=Droid+Sans+Mono|VT323" rel="stylesheet">
+<style>
+	#output{
+		font-family:'VT323', Courier,monospace;
+		font-size: 100px;
+		color:#40ff00;
+		text-decoration: none;
+	}
+	body{
+		background-color:black;
+	}
+</style>
+<body>
+	<div id="output">
+	</div>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script type="text/javascript">
+	String.prototype.insert = function (index, string) {
+	  if (index > 0)
+	    return this.substring(0, index) + string + this.substring(index, this.length);
+	  else
+	    return string + this;
+	};
+	var printable="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzœ∑´®†¥¨ˆøπåß∂ƒ©˙∆˚¬Ω≈ç√∫˜µ≤≥÷÷ææ“‘«≠–ºª•¶§∞¢£™¡()}*&^%$#@!~_+=-[];',./<>?:|}{"
+
+	function genRandom(length){
+		var result=[];
+		var i=0;
+		while(i < length){
+			i++;
+			result.push(printable.charAt(Math.random()*printable.length));
+			result.push("\t")
+		}
+		return result.join('');
+	};
+	function injectSpaces(string){
+		for(var i=0;i<Math.round(Math.random()*string.length);i++){
+			string.insert(Math.round(Math.random()*string.length), " ")
+		}
+		return string
+	}
+	function genBlock(x, y){
+		var result="";
+		var i=0;
+		while(i < y){
+			i++;
+			result+=injectSpaces(genRandom(x));
+		}
+		return result;
+	}
+	function scroll(){
+		$("#output").append(genBlock(100, 5));
+			$('html, body').animate({ scrollTop: $(document).height()}, 500, 'linear', function(){
+				scroll();
+			})
+	}
+	//TODO: Make it generate as the program scrolls down. Make it happen!
+	$(document).ready(function(){
+		$("#output").append(genBlock(100, 5))
+		scroll();
+
+	})
+</script>
